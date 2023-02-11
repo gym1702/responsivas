@@ -1,0 +1,126 @@
+{% extends 'base/base.html' %}
+
+{% block side_bar %} {% endblock side_bar %}
+{% block top_bar %} {% endblock top_bar %}
+{% block page_content %} {% endblock page_content %}
+{% block footer %} {% endblock footer %}
+
+{% block login %}
+
+<div class="container">
+
+    <!-- Outer Row -->
+    <div class="row justify-content-center">
+
+        <div class="col-xl-10 col-lg-12 col-md-9">
+
+            <div class="card o-hidden border-0 shadow-lg my-5">
+                <div class="card-body p-0">
+                    <!-- Nested Row within Card Body -->
+                    <div class="row">
+                        <div class="col-lg-4 d-none d-lg-block bg-login-image"></div>
+                        <div class="col-lg-8">
+                            <div class="p-4">
+                                <div class="text-center">
+                                    <h1 class="h4 text-gray-900 mb-4">Registrar usuario</h1>
+                                    <small class="text-danger">
+                                        {% if form.errors %}
+                                            {% for field in form %}
+                                                {% if field.errors %}
+                                                    {% for error in field.errors %}
+                                                        {{ error | escape}}
+                                                    {% endfor %}
+                                                {% endif %}
+                                            {% endfor %}
+
+                                            {% if form.non_field_errors %}
+                                                    {% for error in form.non_field_errors %}
+                                                        {{ error | escape}}
+                                                    {% endfor %}
+                                            {% endif %}
+                                        {% endif %}
+                                    </small>
+                                </div>
+                                <form class="user" method="post">
+                                   
+                                    {% csrf_token %}
+
+                                    <div class="row">
+                                        <div class="col-6">
+                                            <label for="">Email</label>
+                                            {{ form.email}}
+                                        </div>
+                                        <div class="col-6">
+                                            <label for="">Nombre</label>
+                                            {{ form.full_name}}
+                                        </div>
+                                    </div>
+                                    <br>
+                    
+                                    <div class="row">
+                                        <div class="col-6">
+                                            <label for="">Ocupación</label>
+                                            {{ form.ocupacion}}
+                                        </div>                                        
+                                        <div class="col-6">
+                                            <label for="">Genero</label>
+                                            {{ form.genero}}
+                                        </div>
+                                    </div>
+                                    <br>
+                    
+                                    <div class="row">
+                                        <div class="col-4">
+                                            <label for="">Fecha de nacimiento</label>
+                                            {{ form.dia_nac}}
+                                        </div>
+                                        <div class="col-4">
+                                            <label for="">Contraseña</label>
+                                            {{ form.pass1}}
+                                        </div>
+                                        <div class="col-4">
+                                            <label for="">Confirmar contraseña</label>
+                                            {{ form.pass2}}
+                                        </div>
+                                    </div>
+                                    <br>
+                                    
+                                    <div align="right">
+                                        <button type="submit" class="btn btn-primary">Guardar</button>
+                                        <a href="{% url 'home_app:home' %}" class="btn btn-secondary">Cancelar</a>
+                                    </div>
+
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock login %}
+
+{% block js_page %}
+    <script>
+        {% if form.errors %}
+            {% for field in form %}
+                {% if field.errors %}
+                    {% for error in field.errors %}
+                        mensajesweet('{{ error | escape }}', 'error', 'Error', 'center', 'true', '5000');
+                    {% endfor %}
+                {% endif %}
+            {% endfor %}
+
+            {% if form.non_field_errors %}
+                {% for error in form.non_field_errors %}
+                    mensajesweet('{{ error | escape }}', 'error', 'Error','center', 'true', '5000');
+                {% endfor %}
+            {% endif %}
+        {% endif %}
+    </script>
+{% endblock js_page %}

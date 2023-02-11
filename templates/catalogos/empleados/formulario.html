@@ -1,0 +1,211 @@
+<div class="modal-dialog modal-lg">
+    <div class="modal-content">
+
+        {% if obj %}
+        <form method="POST" id="frmEmpleado" role="form" class="form" action="{% url 'catalogos_app:empleado_editar' obj.pk %}"
+            enctype="multipart/form-data">
+            {% else %}
+            <form method="POST" id="frmEmpleado" role="form" class="form" action="{% url 'catalogos_app:empleado_crear' %}"
+                enctype="multipart/form-data">
+                {% endif %}
+
+                {% csrf_token %}
+                <div class="col-xl-12 col-md-12 mb-12">
+                    {% if obj %}
+                    <div class="card border-left-warning shadow h-100 py-2">
+                        {% else %}
+                        <div class="card border-left-success shadow h-100 py-2">
+                            {% endif %}
+                            <div class="card-body">
+                                <div class="row no-gutters">
+                                    <div class="col mr-2">
+                                        <div class="text-md font-weight-bold text-secondary text-uppercase mb-1">
+                                            {% if obj %} Editar {% else %} Nuevo {% endif %} empleado
+                                            {% if t %} En responsiva {% endif %}
+                                        </div>
+                                        <div class="dropdown-divider mb-3"></div>
+                                        
+                                        <div class="modal-body">
+
+                                            <div class="row">
+                                                <div class="col-4">
+                                                    <div class="card">
+                                                        <div class="card-body">
+                                                            <div class="row mb-12 text-center">
+                                                                <div class="col-12">
+                                                                    <label>Foto</label>
+                                                                    <div>
+                                                                       <img src="{{ obj.foto.url}}" class="img-profile rounded-circle" alt="Foto de empleado" width="80px">
+                                                                    </div>
+                                                                    <div>
+                                                                        {{ form.foto }}
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <br>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                
+                                                <div class="col-8">
+                                                    <div class="card">
+                                                        <div class="card-body">
+                                                            <div class="row mb-12">
+                                                                <div class="col-12">
+                                                                    <label>Nombre completo</label>
+                                                                    <div>
+                                                                        {{ form.nombre }}
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <br>
+
+                                                            <div class="row mb-12">
+                                                                <div class="col-12">
+                                                                    <label>Email</label>
+                                                                    <div>
+                                                                        {{ form.email }}
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <br>
+                            
+                                                            <div class="row mb-12">
+                                                                <div class="col-6">
+                                                                    <label>Teléfono</label>
+                                                                    <div>
+                                                                        {{ form.telefono }}
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-6">
+                                                                    <label>Sexo</label>
+                                                                    <div>
+                                                                        {{ form.sexo }}
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <br>
+                            
+                                                            <div class="row mb-12">
+                                                                <div class="col-6">
+                                                                    <label>Puesto(s)</label>
+                                                                    <div>
+                                                                        {{ form.puesto }}
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-6">
+                                                                    <label>Departamento</label>
+                                                                    <div>
+                                                                        {{ form.depto }}
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <br>
+                            
+                                                            <div class="row mb-12">
+                                                                <div class="col-6">
+                                                                    <label>Activo</label>
+                                                                    <div>
+                                                                        {% if not obj.tiene_responsiva == 'Si' %}
+                                                                        {{ form.activo }} 
+                                                                        {% else %}
+                                                                        <p class="text-danger">El empleado no se puede inactivar, tiene una responsiva activa.</p>
+                                                                        {% endif %}
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-6" readonly="true">
+                                                                    <label>Tiene responsiva</label>
+                                                                    <div>
+                                                                        {{ form.tiene_responsiva }}
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <br>
+                            
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            
+                                        </div>
+                                        <br>
+
+                                        
+                                        <div ALIGN="right">
+                                            <div>
+                                                <button type="submit" class="btn btn-primary"><span
+                                                        class="fa fa-save"></span> Guardar</button>
+                                                
+                                                <button type="button" class="btn btn-secondary"
+                                                    onclick="return cerrar_modal()"><span class="fa fa-undo"></span>
+                                                    Cancelar</button>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+            </form>
+    </div>
+</div>
+
+<script>
+    //Validad que no se duplique el registro
+    $(function () {
+        var url = $("form").attr("action");
+        var token = jQuery("[name=csrfmiddlewaretoken]").val();
+
+        $("form").submit(function (e) {
+            e.preventDefault();
+            //mensajesweet(token);
+            var formData = $("form").serializeArray();
+            $.ajax({
+                url: url,
+                method: "POST",
+                headers: { 'X-CSRFToken': token },
+                data: formData
+            })
+                .done(function (r, textStatus, xhr) {
+                    if (xhr.status == 200) {
+                        mensajesweet("Proceso realizado con éxito");
+                        cerrar_modal();
+                        actualizarpagina();
+                    }
+                    else {
+                        mensajesweet(textStatus);
+                    }
+                }).fail(function (error) {
+                    var msg = error.responseText
+                    var msg2 = JSON.parse(msg)
+
+                    mensajesweet(msg2["__all__"][0], 'error');
+
+                });
+        });
+    });
+</script>
+
+
+{% if t %}
+<script>
+    //Funcion para crear o editar desde responsiva
+    $("#frmEmpleado").submit(function(e){
+        var frm = $('#frmEmpleado');
+        $.ajax({
+            type: frm.attr('method'),
+            url: frm.attr('action'),
+            data: frm.serialize(),
+            success: function(data){
+                mensajesweet('Proceso realizado con éxito');
+                actualizarpagina();
+            },
+            error: function(data){
+                alert(data);
+            }
+        });
+        return false;
+    });
+</script>
+{% endif %}

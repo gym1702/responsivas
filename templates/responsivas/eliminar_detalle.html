@@ -1,0 +1,29 @@
+<div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content text-center">
+        <div class="modal-title mb-3">
+            <br>
+            <h6 class="modal-title w-100"><i class="far fa-question-circle fa-6x text-gray-200"></i></h6>
+        </div>
+        <h1 class="modal-title w-100 text-center text-gray-50">Atención</h1>
+        <form role="form" action="{% url 'responsivas_app:responsiva_del' obj.responsiva.id obj.pk %}" method="post"  class="form-inline">
+            {% csrf_token %}
+            <div class="col">
+                    <div class="card-body">
+                        <div class="row no-gutters align-items-center">
+                            <div class="col mr-2">
+                                <div class="text-lg mb-2">
+                                    ¿Desea eliminar el equipo {{ obj.equipo }} de la responsiva número {{ obj.responsiva.id }}?
+                                </div>
+                                <!-- <p>Este registro no podra ser recuperado</p> -->
+                                <br>
+                                <button type="submit" class="btn btn-danger" >Eliminar</button>
+                                <button type="button" class="btn btn-secondary" onclick="return cerrar_modal()"></span>Cancelar</button>
+                            </div>
+                        </div>
+                    </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+

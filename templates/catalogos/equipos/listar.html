@@ -1,0 +1,153 @@
+{% extends 'base/base.html' %}
+
+
+{% block page_content %}
+    <!-- Dropdown Card Example -->
+    <div class="card shadow mb-4 col-xl-12 col-md-12" >
+        <!-- Card Header - Dropdown -->
+        <div class="card-header py-3">
+            <h4 class="m-0 font-weight text-secondary">Listado de equipos</h4>
+            <br>
+            <a class="btn btn-primary text-left" onclick="abrir_modal('{% url 'catalogos_app:equipo_crear' %}')" href="#">Agregar</a>
+            
+            <a href="{% url 'catalogos_app:equipos_print_all' %}" target="_blank" class="btn btn-secondary"><i class="fas fa-print"></i></a>
+        </div>
+        <!-- Card Body -->
+        <div class="card-body">
+
+           {% if not obj %}
+                <div class="alert alert-info">No existen registros para mostrar.</div>
+           {% else %}
+                <table id="tbl" class="table table-bordered table-striped">
+                        <thead>
+                            <th>#</th>
+                            <th>Imagen</th>
+                            <th>Insumo</th>
+                            <th>Categoría</th>
+                            <th>Marca</th>
+                            <th>Modelo</th>
+                            <th>Serie</th>
+                            <th>Status</th>
+                            <th>Area</th>
+                            <th>Usuario</th>
+                            <th>Estado</th>
+                            <th>Acciones</th>
+                        </thead>
+                        <tbody>
+                            {% for item in obj %}
+                                <tr>
+                                    <td>{{item.id}}</td>
+                                    <td>
+                                        <img src="/media/{{ item.imagen }}" class="img-profile" alt="" style="width:50px; height:50px; ">
+                                    </td>
+                                    <td>{{item.insumo}}</td>
+                                    <td>{{item.categoria}}</td>
+                                    <td>{{item.marca}}</td>
+                                    <td>{{item.modelo}}</td>
+                                    <td>{{item.serie}}</td>
+                                    {% if item.status == 'Libre' %} 
+                                        <td class="text-primary">Libre</td>
+                                    {% else %}
+                                        <td class="text-warning">Asignado</td>
+                                    {% endif %}
+                                    <td>{{item.depto}}</td>
+                                    <td>{{item.usuario}}</td>
+                                    {% if item.activo == 'Si' %} 
+                                        <td class="text-success">Activo</td>
+                                    {% else %}
+                                        <td class="text-danger">Baja</td>
+                                    {% endif %}
+                                    <td>
+                                        <a href="{% url 'catalogos_app:equipo_detalle' item.id %}" class="btn btn-warning btn-circle btn-sm" title="Ver"><i class="far fa-eye"></i></a>
+
+                                        {% if item.status == 'Libre' %}
+                                        <a href="#" onclick="abrir_modal('{% url 'catalogos_app:equipo_editar' item.id %}')" class="btn btn-info btn-circle btn-sm" role="button"><i class="fa fa-pen"></i></a>
+                                        {% endif %}
+
+                                        {% if item.status == 'Libre' and item.activo == 'No' %}
+                                            <a href="#" onclick="abrir_modal('{% url 'catalogos_app:equipo_eliminar' item.id %}')" class="btn btn-danger btn-circle btn-sm" role="button"><i class="far fa-trash-alt"></i></a>
+                                        {% endif %}
+                                    </td>
+
+                                        
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                </table>
+            {% endif %}
+
+        </div>
+    </div>
+{% endblock page_content %}
+
+
+{% block js_page %}
+<script>
+    //INICIALIZAR DATATABLE
+    $("#tbl").DataTable({
+        "responsive": true, 
+        "lengthChange": false, 
+        "autoWidth": false, 
+        "language": {
+                "decimal": "",
+                "emptyTable": "No hay información",
+                "info": "Mostrando _START_ a _END_ de _TOTAL_ Entradas",
+                "infoEmpty": "Mostrando 0 to 0 of 0 Entradas",
+                "infoFiltered": "(Filtrado de _MAX_ total entradas)",
+                "infoPostFix": "",
+                "thousands": ",",
+                "lengthMenu": "Mostrar _MENU_ Entradas",
+                "loadingRecords": "Cargando...",
+                "processing": "Procesando...",
+                "search": "Buscar:",
+                "zeroRecords": "Sin resultados encontrados",
+                "paginate": {
+                    "first": "Primero",
+                    "last": "Ultimo",
+                    "next": "Siguiente",
+                    "previous": "Anterior"
+                },
+            },
+        // "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
+        "buttons": [
+            {
+                extend: 'excelHtml5',
+                text: '<i class="fas fa-file-excel"></i>',
+                titleAttr: 'Exportar a Excel',
+                className: 'btn btn-success',
+                title:     'Listado de equipos',
+                exportOptions: {
+                    columns: [0,2,3,4,5,6,7,8,9,10]
+                }
+            },
+            {
+                extend: 'pdfHtml5',
+                text: '<i class="fas fa-file-pdf"></i>',
+                titleAttr: 'Exportar a PDF',
+                className: 'btn btn-danger',
+                title:     'Listado de equipos',
+                exportOptions: {
+                    columns: [0,2,3,4,5,6,7,8,9,10]
+                }
+            },
+            {
+                extend: 'print',
+                text: '<i class="fas fa-print"></i>',
+                titleAttr: 'Imprimir',
+                className: 'btn btn-info',
+                title:     'Listado de equipos',
+                exportOptions: {
+                    columns: [0,2,3,4,5,6,7,8,9,10]
+                }
+            },
+            {
+                extend: 'colvis',
+                text: '<i class="fas fa-table"></i>',
+                titleAttr: 'Mostar/ocultar campos',
+                className: 'btn btn-secondary'
+            },
+
+        ]
+    }).buttons().container().appendTo('#tbl_wrapper .col-md-6:eq(0)');
+</script>
+{% endblock js_page %}

@@ -1,0 +1,109 @@
+<div class="modal-dialog modal-lg">
+    <div class="modal-content">
+
+        {% if obj %}
+        <form method="post" rol="form" class="form" action="{% url 'catalogos_app:depto_editar' obj.pk %}"
+            enctype="multipart/form-data">
+            {% else %}
+            <form method="post" rol="form" class="form" action="{% url 'catalogos_app:depto_crear' %}"
+                enctype="multipart/form-data">
+                {% endif %}
+
+                {% csrf_token %}
+                <div class="col-xl-12 col-md-12 mb-12">
+                    {% if obj %}
+                    <div class="card border-left-warning shadow h-100 py-2">
+                        {% else %}
+                        <div class="card border-left-success shadow h-100 py-2">
+                            {% endif %}
+                            <div class="card-body">
+                                <div class="row no-gutters">
+                                    <div class="col mr-2">
+                                        <div class="text-md font-weight-bold text-secondary text-uppercase mb-1">
+                                            {% if obj %} Editar {% else %} Nueva {% endif %} Departamento
+                                        </div>
+                                        <div class="dropdown-divider mb-3"></div>
+
+                                        <div class="row mb-12">
+                                            <div class="col-10">
+                                            </div>
+                                            <div class="col-2">
+                                                <label>Activo</label>
+                                                <div>
+                                                    {{ form.activo }} 
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <br>
+
+                                        <div class="row mb-12">
+                                            <div class="col-4">
+                                                <label>Nombre</label>
+                                                <div>
+                                                    {{ form.nombre }}
+                                                </div>
+                                            </div>
+                                            <div class="col-8">
+                                                <label>Función</label>
+                                                <div>
+                                                    {{ form.funcion }}
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <br>
+
+                                        <div ALIGN="right">
+                                            <div>
+                                                <button type="submit" class="btn btn-primary"><span
+                                                        class="fa fa-save"></span> Guardar</button>
+                                                        
+                                                <button type="button" class="btn btn-secondary"
+                                                    onclick="return cerrar_modal()"><span class="fa fa-undo"></span>
+                                                    Cancelar</button>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+            </form>
+    </div>
+</div>
+
+<script>
+    //Validad que no se duplique el registro
+    $(function(){
+        var url = $("form").attr("action");
+        var token = jQuery("[name=csrfmiddlewaretoken]").val();
+
+        $("form").submit(function(e){
+            e.preventDefault();
+            //mensajesweet(token);
+            var formData = $("form").serializeArray();
+            $.ajax({
+                url: url,
+                method: "POST",
+                headers: {'X-CSRFToken': token},
+                data: formData
+            })
+            .done(function(r,textStatus,xhr){
+                if(xhr.status==200){
+                    mensajesweet("Proceso realizado con éxito");
+                    cerrar_modal();
+                    actualizarpagina();
+                }
+                else{
+                    mensajesweet(textStatus);
+                }
+            }).fail(function(error){
+                var msg = error.responseText
+                var msg2 =JSON.parse(msg)
+
+                mensajesweet(msg2["__all__"][0],'error');
+
+            });
+        });
+    });
+</script>

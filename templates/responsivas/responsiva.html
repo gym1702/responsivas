@@ -1,0 +1,368 @@
+{% extends 'base/base.html'%}
+
+{% block page_content %}
+    <form method="post" id="frmResponsivas">
+        {% csrf_token %}
+        <div class="col-xl-12 col-md-12 mb-12">
+            {% if encabezado %}
+            <div class="card border-left-warning shadow h-100 py-2">
+            {% else %}
+            <div class="card border-left-success shadow h-100 py-2">
+            {% endif %}
+                <div class="card-body">
+                        <div class="row no-gutters align-items-center">
+                            <div class="col mr-2">
+                                <div class="text-lg font-weight text-secondary text-uppercase mb-1">
+                                    {% if encabezado %} Datos de la {% else %} Nueva {% endif %} Responsiva
+                                </div>
+                                <div class="dropdown-divider"></div>
+                                <div class="row">
+                                    <!-- Inicio Izquierda -->
+                                    <div class="col-5">
+                                        <!-- Inicio Encabezado -->
+                                        <div class="form-group row">
+                                            <label for="id_empleado" class="col-sm-2 col-form-label">Usuario:</label>
+                                            <div class="col-sm-8" >
+
+                                                {{ form_enc.empleado }}                                                    
+                                                
+                                              <!-- <select name="usuario" id="usuario" class="form-control">
+                                                <option value="0">Seleccione un usuario</option>
+                                                {% for item in emp %}
+                                                    <option value="{{item.id}}"> {{item.nombre}} {{item.apellidos}} </option>
+                                                {% endfor %}
+                                              </select> -->
+
+                                            </div>
+                                            <div class="col-sm-2">
+                                                <button class="btn btn-outline-primary" id="btnEditarUsuario"><i class="far fa-edit"></i></button>
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-6">
+                                                <!-- <div class="form-group" autocomplete="off">
+                                                    <label for="id_no_responsiva">No. Responsiva</label>
+                                                    {{form_enc.no_responsiva}}
+                                                </div>    -->
+                                                <div class="form-group">
+                                                    <label for="id_fecha_entrega">Fecha entrega:</label>
+                                                    {{form_enc.fecha_entrega}}
+                                                </div>    
+                                                <!-- <div class="form-group">
+                                                    <label for="id_fecha_devolucion">Fecha devolucion:</label>
+                                                    {{form_enc.fecha_devolucion}}
+                                                </div>                                -->
+                                            </div>
+
+                                            <div class="col-6">
+                                                
+                                                <div class="form-group">
+                                                    <label for="id_estado">Estado</label>
+                                                    {{form_enc.estado_entrega}}
+                                                </div>  
+                                                <div class="form-group">
+                                                    <label for="id_observaciones">Observaciones</label>
+                                                    {{form_enc.observaciones}}
+                                                </div>
+                                                <!-- <div class="form-group">
+                                                    <label for="id_fecha_devolucion">Fecha devolucion:</label>
+                                                    {{form_enc.fecha_devolucion}}
+                                                </div> -->
+                                            </div>
+
+                                            <!-- <div class="col-12">
+                                                <div class="form-group">
+                                                    <label for="id_observaciones">Observaciones</label>
+                                                    {{form_enc.observaciones}}
+                                                </div>
+                                            </div> -->
+                                        </div>
+                                        <!-- Fin Encabezado -->
+                                    </div>
+
+                                    <div class="dropdown-divider"></div>
+                                    <!-- Fin Izquierda -->
+                                    
+                                    <!-- Inicio Derecha -->
+                                    <div class="col-7 border-left">
+                                        <div ALIGN="center">
+                                            <font style="font-size:18px; color: rgb(96, 228, 96);">Equipo Libre</font>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col">
+                                                <table class="table table-striped table-hover dt-responsive table-sm nowrap tbl-equipos" style="width:100%">
+                                                    <thead>
+                                                        <th>Id</th>  
+                                                        <th>Categoria</th>     
+                                                        <th>Insumo</th>      
+                                                        <th>Serie</th>
+                                                        <th>Modelo</th>
+                                                        <th class="all">Acciones</th>
+                                                    </thead>
+                                                    <tbody>
+                                                        {% for item in equipos %}
+                                                        <tr>
+                                                        <td>{{ item.id }}</td>
+                                                        <td>{{ item.categoria }}</td>
+                                                        <td>{{ item.insumo }}</td>
+                                                        <td>{{ item.serie }}</td>
+                                                        <td>{{ item.modelo }}</td>
+                                                        <td>
+                                                            <button type="button" class="btn btn-success btn-circle btn-sm"
+                                                            onclick="selectEquipo({{item.id}}, {{item.insumo}}, '{{item.serie}}', '{{item.modelo}}')" ><i class="fa fa-check"></i></button>
+                                                        </td>
+                                                        </tr>
+                                                        {% endfor %}
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                        <div class="dropdown-divider"></div>
+
+                                        <div class="form-group row">
+                                            <label for="id_id_equipo" class="col-sm-2 col-form-label font-weight-bold">Equipo:</label>
+                                            <div class="col-sm-1">
+                                                <input type="text" readonly class="form-control-plaintext font-weight-bold" name="id_id_equipo" id="id_id_equipo" value="" required>
+                                            </div>
+                                            <div class="col-sm-3">
+                                                <input type="text" readonly class="form-control-plaintext font-weight-bold" id="id_insumo_equipo" value="" required>
+                                            </div>
+                                            <div class="col-sm-3">
+                                                <input type="text" readonly class="form-control-plaintext font-weight-bold" id="id_serie_equipo" value="" required>
+                                            </div>
+                                            <div class="col-sm-3">
+                                                <input type="text" readonly class="form-control-plaintext font-weight-bold" id="id_modelo_equipo" value="" required>
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label for="id_cantidad_detalle" class="col-sm-2 col-form-label">Cantidad:</label>
+                                            <div class="col-sm-2">
+                                                <input type="number" class="form-control" name="id_cantidad_detalle" id="id_cantidad_detalle" value="1" required>
+                                            </div>
+                                            <div class="col">
+                                                <button type="button" class="btn btn-sm btn btn-secondary" onclick="clear_Detail();"><i class="fa fa-minus" aria-hidden="true"></i> Quiar equipo</button>
+                                                <button type="submit" class="btn btn-sm btn-success"><span class="fa fa-plus"></span> Agregar equipo</button>
+                                            </div>
+                                        </div>
+                                        <br>
+
+                                        <div ALIGN="right">
+                                            <!-- <button type="submit" class="btn btn-success"><span class="fa fa-plus"></span> Agregar equipo</button> -->
+                                            <a href="{% url 'responsivas_app:responsiva_listar' %}" class="btn btn-secondary"><i class="fa fa-reply"></i>  Listo</a>
+                                        </div>
+                                        <!-- Fin Botones -->
+                                    </div>
+                                    <!-- Fin Derecha -->
+                                </div>
+                                
+                                <div class="dropdown-divider divider-primary"></div>
+
+                                <div ALIGN="center">
+                                    <font style="font-size:18px; color:tomato">Equipo Asignado</font>
+                                </div>
+
+                                <!-- Inicio Detalle -->
+                                <div div class="card border-left-secondary shadow h-100 py-2">
+                                    <div class="col">
+                                        <table class="table2 table-striped table-hover dt-responsive nowrap" style="width:100%">
+                                            <thead>
+                                                <!-- <th>Id</th>     -->
+                                                <th>Cantidad</th> 
+                                                <th>Categoria</th> 
+                                                <th>Insumo</th>  
+                                                <th>Modelo</th>                                                
+                                                <th class="all">Acciones</th>
+                                            </thead>
+                                            <tbody>
+                                                {% for item in detalle %}
+                                                <tr>
+                                                <!-- <td>{{ item.id }}</td> -->
+                                                <td>{{ item.cantidad }}</td>
+                                                <td>{{ item.equipo.categoria }}</td>
+                                                <td>{{ item.equipo.insumo }}</td>
+                                                <td>{{ item.equipo }}</td>                                                
+                                                <td>
+                                                    <button class="btn btn-danger btn-circle btn-sm" onclick="return abrir_modal('{% url 'responsivas_app:responsiva_del' encabezado.pk item.id %}')"><i class="fas fa-trash-alt"></i></button>
+                                                </td>
+                                                </tr>
+                                                {% endfor %}
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                                <br>
+                                <!-- Botones-->
+                                <div ALIGN="right">
+                                    <div class="col">
+                                        <!-- <button type="submit" class="btn btn-danger"><span class="fa fa-save"></span> Guardar</button> -->
+                                        <!-- <a href="{% url 'responsivas_app:responsiva_listar' %}" class="btn btn-secondary"><i class="fa fa-reply"></i> Cancelar</a> -->
+                                    </div>
+                                </div>
+                                <!-- Fin Detalle -->
+                            </div>
+                        </div>
+                </div>
+        </div>
+    </form>
+{% endblock %}
+
+
+{% block js_page %}
+<script>
+    $(document).ready(function() {
+
+        // window.onload = function(){
+        //     var fecha = new Date(); //Fecha actual
+        //     var mes = fecha.getMonth()+1; //obteniendo mes
+        //     var dia = fecha.getDate(); //obteniendo dia
+        //     var ano = fecha.getFullYear(); //obteniendo año
+        //     if(dia<10)
+        //         dia='0'+dia; //agrega cero si el menor de 10
+        //     if(mes<10)
+        //         mes='0'+mes //agrega cero si el menor de 10
+        //     document.getElementById('#id_fecha_entrega').value=ano+"-"+mes+"-"+dia;
+        // };
+
+
+        $('#id_fecha_entrega').datetimepicker({
+            timepicker: false,
+            format:'Y-m-d',
+            value: new Date(), 
+        });
+
+        $('.table').DataTable({
+            "pageLength": 3,
+            "language": {
+                "decimal": "",
+                "emptyTable": "No hay información",
+                "info": "Mostrando _START_ a _END_ de _TOTAL_ Entradas",
+                "infoEmpty": "Mostrando 0 to 0 of 0 Entradas",
+                "infoFiltered": "(Filtrado de _MAX_ total entradas)",
+                "infoPostFix": "",
+                "thousands": ",",
+                "lengthMenu": "Mostrar _MENU_ Entradas",
+                "loadingRecords": "Cargando...",
+                "processing": "Procesando...",
+                "search": "Buscar:",
+                "zeroRecords": "Sin resultados encontrados",
+                "paginate": {
+                "sFirst": "<span class='fa fa-angle-double-left'></span>",
+                "sLast": "<span class='fa fa-angle-double-right'></span>",
+                "sNext": "<span class='fa fa-angle-right'></span>",
+                "sPrevious": "<span class='fa fa-angle-left'></span>"
+            },
+            }
+        });
+
+        $('.table2').DataTable({
+            "pageLength": 3,
+            "language": {
+                "decimal": "",
+                "emptyTable": "No hay información",
+                "info": "Mostrando _START_ a _END_ de _TOTAL_ Entradas",
+                "infoEmpty": "Mostrando 0 to 0 of 0 Entradas",
+                "infoFiltered": "(Filtrado de _MAX_ total entradas)",
+                "infoPostFix": "",
+                "thousands": ",",
+                "lengthMenu": "Mostrar _MENU_ Entradas",
+                "loadingRecords": "Cargando...",
+                "processing": "Procesando...",
+                "search": "Buscar:",
+                "zeroRecords": "Sin resultados encontrados",
+                "paginate": {
+                "sFirst": "<span class='fa fa-angle-double-left'></span>",
+                "sLast": "<span class='fa fa-angle-double-right'></span>",
+                "sNext": "<span class='fa fa-angle-right'></span>",
+                "sPrevious": "<span class='fa fa-angle-left'></span>"
+            },
+            }
+        });
+
+        //VALIDAR QUE SE HALLA SELECCIONADO AL MENOS UN EQUIPO
+        $("#frmResponsivas").submit(function(e){
+
+            if($('#id_fecha_entrega').val() == ""){
+                e.preventDefault();
+                $.alert({
+                        title:'Atencion',
+                        content:'Debe seleccionar una fecha',
+                });
+                return false;
+            }
+
+            if($('#id_id_equipo').val() == 0){
+                e.preventDefault();
+                //manda una alerta
+                $.alert({
+                    title:'Atencion',
+                    content:'No ha seleccionado nungun equipo',
+                })
+            }
+        });
+
+    });
+
+    function selectEquipo(id, insumo, serie, modelo)
+    {
+        $("#id_cantidad_detalle").val(0);
+
+        $("#id_id_equipo").val(+id);
+        $("#id_insumo_equipo").val(insumo);
+        $("#id_serie_equipo").val(serie);
+        $("#id_modelo_equipo").val(modelo);
+
+        $("#id_cantidad_detalle").val(1);
+        //$("#id_cantidad_detalle").select();
+
+        $('.table').DataTable().search('').draw();
+    }
+
+    function clear_Detail(){
+        $('#id_cantidad_detalle').val(0);
+        
+        $('#id_id_equipo').val('');
+        $("#id_insumo_equipo").val('');
+        $('#id_serie_equipo').val('');
+        $("#id_modelo_equipo").val('');
+
+        $('.table').DataTable().search('').draw();
+
+        $("#id_empleado").focus();
+        $("#id_empleado").select();
+    }
+
+    $("#id_empleado").focus();
+    $("#id_cantidad_detalle").val(0);
+
+    //FUNCION PARA SELECT2
+    // $(function (){
+    //     $("#usuario").select2({
+    //         allowClear: true
+    //     });
+    // })
+
+
+    //Funcion para buscar usuarios
+    $("#btnEditarUsuario").click(function(e){
+        e.preventDefault();
+        var idUsuario = $("#id_empleado").val()
+        var url;
+        const qs = "?t=fc";
+        //alert(idUsuario)
+
+        if(idUsuario == ''|| idUsuario == undefined){
+            url = '/empleado/crear/' + qs;
+            //alert(url)
+            abrir_modal(url);
+            
+        }else{
+            url = '/empleado/editar/' + idUsuario + qs;
+            //alert(url)
+            abrir_modal(url);
+        }
+        var token = '{{ csrf_token }}';
+    });
+    
+</script>
+{% endblock %}

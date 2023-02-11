@@ -1,0 +1,150 @@
+{% extends 'base/base.html' %}
+
+
+{% block page_content %}
+
+<div class="row">
+    <div class="container-sm col-10">
+        <div class="card">
+            <div class="card-header">
+                <h4>Detalle de equipo</h4>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-4">
+
+                        <div class="text-center">
+                            <img src="{{ obj.imagen.url }}" class="img-profile" alt="Imagen del equipo" style="width:120px; height:120px; ">
+                        </div>
+                        <hr>
+
+                        <div class="text-center">
+                            {% if obj.activo == 'Si' %} 
+                                <h6>Activo</h6>
+                            {% else %} 
+                                <h6>Baja</h6>
+                            {% endif %}
+                        </div> 
+                        <hr>
+
+                        <div class="text-center">
+                            {% if obj.activo == 'No' %}
+                                <h5><h5> 
+                            {% else %}
+                                <h5>{{ obj.status }}</h5> 
+                            {% endif %}
+                        </div> 
+                    </div>
+
+                    <div class="col-8">
+                        <h3>{{ obj.marca }}-{{ obj.modelo }}</h3>
+                        <hr>
+                        <ul>
+                            <div class="row">
+                                <div class="col-6">
+                                    <i class="fa fa-user"></i> Usuario 
+                                    <p style="font-weight:300;">{{ obj.usuario }}</p> 
+                                </div>
+                                <div class="col-6">
+                                    <i class="fa fa-sitemap"></i> Deparmento
+                                    <p style="font-weight:300;">{{ obj.depto }}</p>                               
+                                </div>
+                            </div>  
+                            <hr>
+
+                            <div class="row">
+                                <div class="col-6">
+                                    <i class="fa fa-check"></i> Insumo
+                                    <p style="font-weight:300;">{{ obj.insumo }}</p>    
+                                </div>
+                                <div class="col-6">
+                                    <i class="fa fa-ellipsis-h"></i> No. Serie 
+                                    <p style="font-weight:300;">{{ obj.serie }}</p>                                     
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-6">
+                                    <i class="fa fa-box"></i> Categoria 
+                                    <p style="font-weight:300;">{{ obj.categoria }}</p>  
+                                </div>
+                                <div class="col-6">
+                                    <i class="fa fa-star"></i> Condiciones de entrega 
+                                    <p style="font-weight:300;">{{ obj.condiciones }}</p>                                     
+                                </div>
+                            </div>
+                            <hr>
+
+                            <div class="row">
+                                <div class="col-6">
+                                    <i class="fa fa-microchip"></i> Procesador
+                                    <p style="font-weight:300;">{{ obj.procesador }}</p>   
+                                </div>
+                                <div class="col-6">
+                                    <i class="fa fa-memory"></i> Ram
+                                    <p style="font-weight:300;">{{ obj.ram }} Gb</p>                                   
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-6">
+                                    <i class="fa fa-hdd"></i> Disco duro
+                                    <p style="font-weight:300;">{{ obj.disco }} Gb</p>
+                                </div>
+                                <div class="col-6">
+                                    <i class="fa fa-window-restore"></i> Sistema operativo
+                                    <p style="font-weight:300;">{{ obj.so }}</p>                                    
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-6">
+                                    <i class="fa fa-tv"></i> Pantalla
+                                    <p style="font-weight:300;">{{ obj.pantalla }}</p> 
+                                </div>
+                            </div>
+                            <hr>
+
+                            <div class="row">
+                                <div class="col-6">
+                                    <i class="fa fa-expand"></i> Observaciones
+                                    {% if obj.observaciones %}
+                                        <p style="font-weight:300;">{{ obj.observaciones }}</p> 
+                                    {% else %}
+                                        <p>-</p>
+                                    {% endif %}
+                                </div>
+                                <div class="col-6">
+                                    <i class="fa fa-sticky-note"></i> Descripción adicional
+                                    {% if obj.descripcion %}
+                                        <p style="font-weight:300;">{{ obj.descripcion }}</p> 
+                                    {% else %}
+                                        <p>-</p>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12">
+                                    <i class="fa fa-clipboard"></i> Otros componentes
+                                    {% if obj.descripcion %}
+                                        <p style="font-weight:300;">{{ obj.caracteristicas }}</p> 
+                                    {% else %}
+                                        <p>-</p>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <br>                         
+                                             
+                        </ul>
+                    </div>
+                </div>                
+            </div>
+            <div class="card-footer">
+                <div align="right">
+                    <a href="{% url 'catalogos_app:equipo_listar' %}" class="btn btn-primary">Regresar</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock page_content %}

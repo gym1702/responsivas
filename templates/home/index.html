@@ -1,0 +1,238 @@
+{% extends 'base/base.html' %}
+
+{% block page_content %}
+
+<script src="https://code.highcharts.com/highcharts.js"></script>
+<script src="https://code.highcharts.com/modules/exporting.js"></script>
+<script src="https://code.highcharts.com/modules/export-data.js"></script>
+<script src="https://code.highcharts.com/modules/accessibility.js"></script>
+
+<!-- <div class="container-fluid">
+
+    <h1 class="mb-2 text-grey-800 text-center">Bienvenido</h1>
+    <h5 class="text-center">Sistema de responsivas de equipos</h5>
+
+</div> -->
+
+<div class="container-fluid">
+    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+        <h1 class="h3 mb-0 text-gray-600">Dashboard</h1>
+        <!-- <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
+                class="fas fa-download fa-sm text-white-50"></i> Generate Report</a> -->
+    </div>
+
+    <!-- TOTAL DE EQUIPO ADQUIRIDO -->
+    <div class="row">
+
+        <div class="col-lg-12 mb-12">
+            <div class="card shadow mb-4">
+                <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold text-primary"></h6>
+                </div>
+                <div class="card-body">
+
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="col-12">
+                                <div id="container"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- TOTAL DE EQUIPOS ENTREGADOS -->
+    <div class="row">
+
+        <div class="col-lg-12 mb-12">
+            <div class="card shadow mb-4">
+                <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold text-primary">Cantidad de equipos asignados</h6>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+
+                        <!-- Earnings (Monthly) Card Example -->
+                        <div class="col-xl-3 col-md-6 mb-4">
+                            <div class="card border-left-primary shadow h-100 py-2">
+                                <div class="card-body">
+                                    <div class="row no-gutters align-items-center">
+                                        <div class="col mr-2">
+                                            <div class="text-mb font-weight-bold text-primary text-uppercase mb-1">
+                                                Desktop
+                                            </div>
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800">
+                                                {% if not desktop %}
+                                                    0
+                                                {% else %}
+                                                    {{ desktop }}
+                                                {% endif %}
+                                            </div>
+                                        </div>
+                                        <div class="col-auto">
+                                            <i class="fas fa-desktop fa-2x text-gray-300"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                
+                        <!-- Earnings (Monthly) Card Example -->
+                        <div class="col-xl-3 col-md-6 mb-4">
+                            <div class="card border-left-dark shadow h-100 py-2">
+                                <div class="card-body">
+                                    <div class="row no-gutters align-items-center">
+                                        <div class="col mr-2">
+                                            <div class="text-mb font-weight-bold text-dark text-uppercase mb-1">
+                                                Laptop
+                                            </div>
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800">
+                                                {% if not laptop %}
+                                                    0
+                                                {% else %}
+                                                    {{ laptop }}
+                                                {% endif %}
+                                            </div>
+                                        </div>
+                                        <div class="col-auto">
+                                            <i class="fas fa-laptop fa-2x text-gray-300"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                
+                        <!-- Earnings (Monthly) Card Example -->
+                        <div class="col-xl-3 col-md-6 mb-4">
+                            <div class="card border-left-success shadow h-100 py-2">
+                                <div class="card-body">
+                                    <div class="row no-gutters align-items-center">
+                                        <div class="col mr-2">
+                                            <div class="text-mb font-weight-bold text-success text-uppercase mb-1">
+                                                Impresoras
+                                            </div>
+                                            <div class="row no-gutters align-items-center">
+                                                <div class="col-auto">
+                                                    <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">
+                                                        {% if not imp %}
+                                                            0
+                                                        {% else %}
+                                                            {{ imp }}
+                                                        {% endif %}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-auto">
+                                            <i class="fas fa-print fa-2x text-gray-300"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                
+                        <!-- Pending Requests Card Example -->
+                        <div class="col-xl-3 col-md-6 mb-4">
+                            <div class="card border-left-warning shadow h-100 py-2">
+                                <div class="card-body">
+                                    <div class="row no-gutters align-items-center">
+                                        <div class="col mr-2">
+                                            <div class="text-mb font-weight-bold text-warning text-uppercase mb-1">
+                                                Otros
+                                            </div>
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800">
+                                                {% if not otros %}
+                                                    0
+                                                {% else %}
+                                                    {{ otros }}
+                                                {% endif %}
+                                            </div>
+                                        </div>
+                                        <div class="col-auto">
+                                            <i class="fas fa-comments fa-2x text-gray-300"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</div>       
+
+
+<script type="application/javascript">
+    Highcharts.chart('container', {
+    chart: {
+        type: 'column'
+    },
+    title: {
+        text: 'Total de equipos adquiridos'
+    },
+    subtitle: {
+        text: ''
+    },
+    xAxis: {
+        categories: [
+            'Equipos'
+            ],
+        crosshair: true
+    },
+    yAxis: {
+        min: 0,
+        title: {
+        text: 'Total'
+        }
+    },
+    tooltip: {
+        headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+        pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+            '<td style="padding:0"><b>{point.y:.1f} pza.</b></td></tr>',
+        footerFormat: '</table>',
+        shared: true,
+        useHTML: true
+    },
+    plotOptions: {
+        column: {
+        pointPadding: 0.2,
+        borderWidth: 0
+        }
+    },
+    series: [
+        {
+        name: 'Desktop',
+        showInLegend: true,
+        colorByPoint: false,
+        data: {{ grafico_desktop | safe }}
+
+    }, {
+        name: 'Laptop',
+        showInLegend: true,
+        colorByPoint: false,
+        data: {{ grafico_laptop | safe }}
+
+    }, {
+        name: 'Impresoras',
+        showInLegend: true,
+        colorByPoint: false,
+        data: {{ grafico_imp | safe }}
+
+    }, {
+        name: 'Otros',
+        showInLegend: true,
+        colorByPoint: false,
+        data: {{ grafico_otros | safe }}
+
+    }] 
+});
+</script>
+
+{% endblock page_content %}

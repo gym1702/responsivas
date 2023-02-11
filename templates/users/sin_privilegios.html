@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% block page_content %}
+    <div class="col-xl-12 col-md-12 mb-12">
+        <div class="card text-center">
+            <div class="card-body">
+                <div class="row no-gutters align-item-center">
+                    <div class="col mr-2">
+
+                        <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                            <h4>Usuario: {{ user.username }} | {{ user.get_full_name }}</h4>
+                        </div>
+                        <div class="dropdwoun-divider"></div>
+
+                        <div class="col">
+                            <h5>No tiene los privilegios suficientes para ver esta opción. </h5>
+                            Para poder acceder, debe loguearse con un usuario con los privilegios necesarios.
+                        </div>
+                        <div class="dropdown-divider"></div>
+
+                        <div class="row">
+                            <div class="col">
+                                <a href="{% url 'bases:home' %}" class="btn btn-primary"><span class="fa fa-home"></span> Inicio</a>
+                                <a href="{% url 'bases:login' %}" class="btn btn-primary"><span class="fa fa-user"></span> Iniciar sesion con otro usuario</a>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock page_content %}

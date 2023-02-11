@@ -1,0 +1,245 @@
+<div class="modal-dialog modal-lg">
+    <div class="modal-content">
+
+        {% if obj %}
+        <form method="POST" id="frmEquipo" role="form" class="form" action="{% url 'catalogos_app:equipo_editar' obj.pk %}"
+            enctype="multipart/form-data">
+            {% else %}
+            <form method="POST" id="frmEquipo" role="form" class="form" action="{% url 'catalogos_app:equipo_crear' %}"
+                enctype="multipart/form-data">
+                {% endif %}
+
+                {% csrf_token %}
+                <div class="col-xl-12 col-md-12 mb-12">
+                    {% if obj %}
+                    <div class="card border-left-warning shadow h-100 py-2">
+                        {% else %}
+                        <div class="card border-left-success shadow h-100 py-2">
+                            {% endif %}
+                            <div class="card-body">
+                                <div class="row no-gutters">
+                                    <div class="col mr-2">
+                                        <div class="text-md font-weight-bold text-secondary text-uppercase mb-1">
+                                            {% if obj %} Editar {% else %} Nuevo {% endif %} Equipo
+                                        </div>
+                                        <div class="dropdown-divider mb-3"></div>
+
+                                        <div class="row mb-12">
+                                            <div class="col-3">
+                                                <label>Insumo</label>
+                                                <div>
+                                                    {{ form.insumo }}
+                                                </div>
+                                            </div>
+                                            <div class="col-3">
+                                                <label>Marca</label>
+                                                <div>
+                                                    {{ form.marca }}
+                                                </div>
+                                            </div>
+                                            <div class="col-3">
+                                                <label>Modelo</label>
+                                                <div>
+                                                    {{ form.modelo }}
+                                                </div>
+                                            </div>
+                                            <div class="col-3">
+                                                <label>No. Serie</label>
+                                                <div>
+                                                    {{ form.serie }}
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <br>
+
+                                        <div class="row mb-12">
+                                            <div class="col-6">
+                                                <label>Descripcion adicional</label>
+                                                <div>
+                                                    {{ form.descripcion }}
+                                                </div>
+                                            </div>
+                                            <div class="col-3">
+                                                <label>Categoría</label>
+                                                <div>
+                                                    {{ form.categoria }}
+                                                </div>
+                                            </div>
+                                            <div class="col-3">
+                                                <label>Condiciones</label>
+                                                <div>
+                                                    {{ form.condiciones }}
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <br>
+                        
+                                        <div class="row mb-12">                                            
+                                            <div class="col-3">
+                                                <label>Procesador</label>
+                                                <div>
+                                                    {{ form.procesador }}
+                                                </div>
+                                            </div>
+                                            <div class="col-3">
+                                                <label>Memoria Ram(Gb)</label>
+                                                <div>
+                                                    {{ form.ram }}
+                                                </div>
+                                            </div>
+                                            <div class="col-3">
+                                                <label>Disco Duro(Gb)</label>
+                                                <div>
+                                                    {{ form.disco }}
+                                                </div>
+                                            </div>
+                                            <div class="col-3">
+                                                <label>Sistema Operativo</label>
+                                                <div>
+                                                    {{ form.so }}
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <br>
+                        
+                                        <div class="row mb-12">
+                                            
+                                            <div class="col-3">
+                                                <label>Pantalla/Monitor</label>
+                                                <div>
+                                                    {{ form.pantalla }}
+                                                </div>
+                                            </div>
+                                            <div class="col-6">
+                                                <label>Otros componentes</label>
+                                                <div>
+                                                    {{ form.caracteristicas }}
+                                                </div>
+                                            </div>
+                                            <div class="col-3">
+                                                {% if obj.status != 'Asignado' %}
+                                                <label>Status</label>
+                                                <div>
+                                                    <p class="text-primary">Libre</p>
+                                                    <!-- {{ form.status }} -->
+                                                </div>
+                                                {% else %}
+                                                <label>Status</label>
+                                                <div>
+                                                    <p class="text-warning">Asignado</p>
+                                                    <!-- {{ form.status }} -->
+                                                </div>
+                                                {% endif %}
+                                            </div>
+                                        </div>
+                                        <br>
+                        
+                                        <div class="row mb-12">                                            
+                                            <div class="col-6">
+                                                <label>Area de ubicación</label>
+                                                <div>
+                                                    {{ form.depto }}
+                                                </div>
+                                            </div>
+                                            <div class="col-6">
+                                                <label>Usuario</label>
+                                                <div>
+                                                    {{ form.usuario }}
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <br>
+                        
+                                        <div class="row mb-12">
+                                            <div class="col-3 text-center">
+                                                <label>Imagen</label>
+                                                <div>
+                                                    <img src="{{ obj.imagen.url }}" class="img-profile" alt="Imagen del equipo" style="width:60px; height:60px; ">
+                                                </div>
+                                                <div>
+                                                    {{ form.imagen }}
+                                                </div>
+                                            </div>
+                                            <div class="col-6">
+                                                <label>Observaciones</label>
+                                                <div>
+                                                    {{ form.observaciones }}
+                                                </div>
+                                            </div>
+                                            <div class="col-2">
+                                                {% if obj %}
+                                                    {% if obj.status == 'Libre' %}
+                                                        <label>Activo</label>
+                                                        <div>
+                                                            {{ form.activo }} 
+                                                        </div>
+                                                    {% else %}
+                                                        <p class="text-danger">El equipo no se puede inactivar porque se encuentra asignado a un empleado.</p>
+                                                    {% endif %}
+                                                {% else %}
+                                                    <label>Activo</label>
+                                                    <div>
+                                                        {{ form.activo }} 
+                                                    </div>
+                                                {% endif %}
+                                            </div>               
+                                        </div>
+                                        <br>
+
+                                        <!-- {{ form.as_p}} -->
+
+                                        <div ALIGN="right">
+                                            <div>
+                                                <button type="submit" class="btn btn-primary"><span
+                                                        class="fa fa-save"></span> Guardar</button>
+                                                
+                                                <button type="button" class="btn btn-secondary"
+                                                    onclick="return cerrar_modal()"><span class="fa fa-undo"></span>
+                                                    Cancelar</button>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+            </form>
+    </div>
+</div>
+
+<script>
+    //Validad que no se duplique el registro
+    $(function () {
+        var url = $("form").attr("action");
+        var token = jQuery("[name=csrfmiddlewaretoken]").val();
+
+        $("form").submit(function (e) {
+            e.preventDefault();
+            //mensajesweet(token);
+            var formData = $("form").serializeArray();
+            $.ajax({
+                url: url,
+                method: "POST",
+                headers: { 'X-CSRFToken': token },
+                data: formData
+            })
+                .done(function (r, textStatus, xhr) {
+                    if (xhr.status == 200) {
+                        mensajesweet("Proceso realizado con éxito");
+                        cerrar_modal();
+                        actualizarpagina();
+                    }
+                    else {
+                        mensajesweet(textStatus);
+                    }
+                }).fail(function (error) {
+                    var msg = error.responseText
+                    var msg2 = JSON.parse(msg)
+
+                    mensajesweet(msg2["__all__"][0], 'error');
+
+                });
+        });
+    });
+</script>

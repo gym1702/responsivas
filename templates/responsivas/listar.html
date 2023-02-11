@@ -1,0 +1,232 @@
+{% extends 'base/base.html' %}
+
+{% block page_content %}
+
+    <!-- Dropdown Card Example -->
+    <div class="card shadow mb-4">
+        <!-- Card Header - Dropdown -->
+        <div class="card-header py-3">
+            <h4 class="m-0 font-weight text-secondary">Listado de responsivas</h4>
+            <br>
+            <!-- <a href="{% url 'responsivas_app:responsiva_crear' %}" class="btn btn-primary">Nueva</a> -->
+            <button id="btnAgregar"  class="btn btn-primary">Nueva</button>
+            <!-- <a href="{% url 'responsivas_app:responsivas_print_all' %}" class="btn btn-secondary"><i class="fas fa-print"></i></a> -->
+        </div>
+        <!-- Card Body -->
+        <div class="card-body">
+
+           {% if not obj %}
+                <div class="alert alert-info">No existen registros para mostrar.</div>
+           {% else %}
+                <table id="tbl" class="table table-bordered table-striped">
+                        <thead>
+                            <th>#</th>
+                            <!-- <th>No. Responsiva</th> -->
+                            <th>Usuario</th>
+                            <th>Fecha Entrega</th>
+                            <th>Estado</th>
+                            <th>Fecha Devolucion</th>
+                            <th>Recibio</th>
+                            <th class="all">Acciones</th>
+                        </thead>
+                        <tbody>
+                            {% for item in obj %}
+                                <tr>
+                                    <td>{{item.id}}</td>
+                                    <!-- <td>{{item.no_responsiva}}</td> -->
+                                    <td>{{item.empleado}}</td>
+                                    <td>{{item.fecha_entrega|date}}</td>
+                                    {% if item.estado_entrega == 'Equipo Entregado' %} 
+                                        <td class="text-primary">Equipo Asignado</td>
+                                    {% else %}
+                                        <td class="text-success">Equipo Devuelto</td>
+                                    {% endif %} 
+                                    
+                                    {% if item.fecha_devolucion == None %} 
+                                        <td>-</td>                                        
+                                    {% else %}
+                                        <td>{{item.fecha_devolucion}}</td>
+                                    {% endif %}
+
+                                    {% if item.recibe_devolucion == None %} 
+                                        <td>-</td>                                        
+                                    {% else %}
+                                        <td>{{item.recibe_devolucion}}</td>
+                                    {% endif %}
+
+                                    <td>
+                                        
+                                        {% if item.estado_entrega == 'Equipo Devuelto' %}
+                                            <a href="{% url 'responsivas_app:responsivas_devolucion' item.id %}" target="_blank" class="btn btn-primary btn-circle btn-sm" title="Imprimir devolucion"><i class="fas fa-print"></i></a>
+                                            <a href="#" onclick="abrir_modal('{% url 'responsivas_app:responsiva_eliminar' item.id %}')" class="btn btn-danger btn-circle btn-sm" role="button" title="Eliminar"><i class="far fa-trash-alt"></i></a> 
+                                        {% endif %}
+                                        
+                                        {% if item.estado_entrega == 'Equipo Entregado' %}
+                                            <a href="{% url 'responsivas_app:responsiva_editar' item.id %}" class="btn btn-info btn-circle btn-sm" title="Editar"><i class="fa fa-pen"></i></a>
+                                            <a href="{% url 'responsivas_app:responsivas_print_one' item.id %}" target="_blank" class="btn btn-primary btn-circle btn-sm" title="Imprimir responsiva"><i class="fas fa-print"></i></a>
+                                            <button class="btn btn-success btn-circle btn-sm" type="button" onclick="devolver_resp({{ item.id }})" title="Devolver"><i class="fa fa-retweet"></i></button>
+                                        {% endif %} 
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                </table>
+            {% endif %}
+
+        </div>
+    </div>
+
+{% endblock page_content %}
+
+{% block js_page %}
+<script>
+         
+    //INICIALIZAR DATATABLE
+    $("#tbl").DataTable({
+        "responsive": true, 
+        "lengthChange": false, 
+        "autoWidth": false, 
+        "language": {
+                "decimal": "",
+                "emptyTable": "No hay información",
+                "info": "Mostrando _START_ a _END_ de _TOTAL_ Entradas",
+                "infoEmpty": "Mostrando 0 to 0 of 0 Entradas",
+                "infoFiltered": "(Filtrado de _MAX_ total entradas)",
+                "infoPostFix": "",
+                "thousands": ",",
+                "lengthMenu": "Mostrar _MENU_ Entradas",
+                "loadingRecords": "Cargando...",
+                "processing": "Procesando...",
+                "search": "Buscar:",
+                "zeroRecords": "Sin resultados encontrados",
+                "paginate": {
+                    "first": "Primero",
+                    "last": "Ultimo",
+                    "next": "Siguiente",
+                    "previous": "Anterior"
+                },
+            },
+        // "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
+        "buttons": [
+            {
+                extend: 'excelHtml5',
+                text: '<i class="fas fa-file-excel"></i>',
+                titleAttr: 'Exportar a Excel',
+                className: 'btn btn-success',
+                title:     'Listado de responsivas',
+                exportOptions: {
+                    columns: [0,1,2,3,4,5]
+                }
+            },
+            {
+                extend: 'pdfHtml5',
+                text: '<i class="fas fa-file-pdf"></i>',
+                titleAttr: 'Exportar a PDF',
+                className: 'btn btn-danger',
+                title:     'Listado de responsivas',
+                exportOptions: {
+                    columns: [0,1,2,3,4,5]
+                }
+            },
+            {
+                extend: 'print',
+                text: '<i class="fas fa-print"></i>',
+                titleAttr: 'Imprimir',
+                className: 'btn btn-info',
+                title:     'Listado de responsivas',
+                exportOptions: {
+                    columns: [0,1,2,3,4,5]
+                }
+            },
+            {
+                extend: 'colvis',
+                text: '<i class="fas fa-table"></i>',
+                titleAttr: 'Mostar/ocultar campos',
+                className: 'btn btn-secondary'
+            },
+
+        ]
+    }).buttons().container().appendTo('#tbl_wrapper .col-md-6:eq(0)');
+
+
+    //FUNCION PARA DEVOLUCION DE RESPONSIVA
+    function devolver_resp(responsiva_id)
+    {
+        //mensajesweet(responsiva_id);
+        
+        $.confirm({
+            theme: 'modern',
+            icon: 'fa fa-exclamation-triangle',
+            title: "Confirmación requerida",
+            content: 'url:/responsivas/devolver/' + responsiva_id,
+            onContentReady: function () {
+                var self = this;
+                this.$content.find('#email').val('{{ user.email }}');
+                this.$content.find('#email').select();
+                this.$content.find('#email').focus();
+            },
+            buttons:{
+                aceptar:{
+                    text: 'Aceptar',
+                    btnClass: 'btn btn-primary',
+                    action: function(){
+                        var usuario = this.$content.find('input#email');
+                        var pass = this.$content.find('input#password');
+
+                        if(!usuario.val().trim()){
+                            mensajejquery("El usuario es requerido", "red");
+                            return false;
+                        }
+
+                        if(!pass.val().trim()){
+                            mensajejquery("La contraseña es requerida", "red");
+                            return false;
+                        }
+
+                        var data = {"email":usuario.val(), "pass":pass.val()};
+                        console.log(data);
+
+                        //Envio de acptacion 
+                        var token = '{{ csrf_token }}';
+                        $.ajax({
+                            headers: { "X-CSRFToken": token },
+                            type: "POST",
+                            data: data,
+                            url: '/responsivas/devolver/' + responsiva_id,
+                            success: function(r){
+                                console.log(r);
+                                if(r==="ok"){
+                                    location.reload(true);
+                                }
+                                mensajejquery(r, "red");
+                            },
+                            error: function(a,b,c){
+                                mensajejquery(c);
+                            }
+                        });
+                    }
+                },
+                cancelar: function(){}
+            }
+            
+        });
+    } 
+
+    // PREGUNTA ANTES DE AGREGAR
+    $("#btnAgregar").click(function (e) {
+        Swal.fire({
+        title: 'Atención',
+        icon: 'warning',
+        text: '¡Verifique que el empleado no cuente con una responsiva, si es así, solo edítela!',
+        showCancelButton: true,
+        confirmButtonText: 'Crear nueva',
+        cancelButtonText: 'Cancelar'
+        }).then((result) => {
+        if (result.isConfirmed) {
+            location.replace("{% url 'responsivas_app:responsiva_crear' %}")
+        }
+        })
+    })   
+
+</script>
+{% endblock js_page %}

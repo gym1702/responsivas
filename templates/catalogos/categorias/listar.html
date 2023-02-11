@@ -1,0 +1,127 @@
+{% extends 'base/base.html' %}
+
+
+{% block page_content %}
+
+    <!-- Dropdown Card Example -->
+    <div class="card shadow mb-4">
+        <!-- Card Header - Dropdown -->
+        <div class="card-header py-3">
+            <h4 class="m-0 font-weight text-secondary">Listado de categorías</h4>
+            <br>
+            <a class="btn btn-primary text-left" onclick="abrir_modal('{% url 'catalogos_app:categoria_crear' %}')" href="#">Agregar</a>
+        </div>
+        <!-- Card Body -->
+        <div class="card-body">
+
+           {% if not obj %}
+                <div class="alert alert-info">No existen registros para mostrar.</div>
+           {% else %}
+                <table id="tbl" class="table table-bordered table-striped">
+                        <thead>
+                            <th>#</th>
+                            <th>Nombre</th>
+                            <th>Descripcion</th>
+                            <th>Estado</th>
+                            <th class="all">Acciones</th>
+                        </thead>
+                        <tbody>
+                            {% for item in obj %}
+                                <tr>
+                                    <td>{{item.id}}</td>
+                                    <td>{{item.nombre}}</td>
+                                    <td>{{item.descripcion}}</td>
+                                    {% if item.activo == 'Si' %} 
+                                        <td class="text-success">Activo</td>
+                                    {% else %}
+                                        <td class="text-danger">Inactivo</td>
+                                    {% endif %}
+                                    <td>
+                                        <a href="#" onclick="abrir_modal('{% url 'catalogos_app:categoria_editar' item.id %}')" class="btn btn-info btn-circle btn-sm" role="button"><i class="fa fa-pen"></i></a>
+                                        
+                                        {% if item.activo == 'No' %}
+                                        <a href="#" onclick="abrir_modal('{% url 'catalogos_app:categoria_eliminar' item.id %}')" class="btn btn-danger btn-circle btn-sm" role="button"><i class="far fa-trash-alt"></i></a>
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                </table>
+            {% endif %}
+
+        </div>
+    </div>
+
+{% endblock page_content %}
+
+
+{% block js_page %}
+    <script>
+        //INICIALIZAR DATATABLE
+    $("#tbl").DataTable({
+        "responsive": true, 
+        "lengthChange": false, 
+        "autoWidth": false, 
+        "language": {
+                "decimal": "",
+                "emptyTable": "No hay información",
+                "info": "Mostrando _START_ a _END_ de _TOTAL_ Entradas",
+                "infoEmpty": "Mostrando 0 to 0 of 0 Entradas",
+                "infoFiltered": "(Filtrado de _MAX_ total entradas)",
+                "infoPostFix": "",
+                "thousands": ",",
+                "lengthMenu": "Mostrar _MENU_ Entradas",
+                "loadingRecords": "Cargando...",
+                "processing": "Procesando...",
+                "search": "Buscar:",
+                "zeroRecords": "Sin resultados encontrados",
+                "paginate": {
+                    "first": "Primero",
+                    "last": "Ultimo",
+                    "next": "Siguiente",
+                    "previous": "Anterior"
+                },
+            },
+        // "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
+        "buttons": [
+            {
+                extend: 'excelHtml5',
+                text: '<i class="fas fa-file-excel"></i>',
+                titleAttr: 'Exportar a Excel',
+                className: 'btn btn-success',
+                title:     'Listado de categorias',
+                exportOptions: {
+                    columns: [0,1,2,3]
+                }
+            },
+            {
+                extend: 'pdfHtml5',
+                text: '<i class="fas fa-file-pdf"></i>',
+                titleAttr: 'Exportar a PDF',
+                className: 'btn btn-danger',
+                title:     'Listado de categorias',
+                exportOptions: {
+                    columns: [1,2,3]
+                }
+            },
+            {
+                extend: 'print',
+                text: '<i class="fas fa-print"></i>',
+                titleAttr: 'Imprimir',
+                className: 'btn btn-info',
+                title:     'Listado de categorias',
+                exportOptions: {
+                    columns: [1,2,3]
+                }
+            },
+            {
+                extend: 'colvis',
+                text: '<i class="fas fa-table"></i>',
+                titleAttr: 'Mostar/ocultar campos',
+                className: 'btn btn-secondary'
+            },
+
+        ]
+    }).buttons().container().appendTo('#tbl_wrapper .col-md-6:eq(0)');
+    </script>
+{% endblock js_page %}

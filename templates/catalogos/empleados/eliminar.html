@@ -1,0 +1,85 @@
+<div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content text-center">
+        <div class="modal-title mb-3">
+            <br>
+            <h6 class="modal-title w-100"><i class="far fa-question-circle fa-6x text-gray-200"></i></h6>
+        </div>
+        <h1 class="modal-title w-100 text-center text-gray-50">Atención</h1>
+        <form method="post" class="form-inliner">
+            {% csrf_token %}
+            <div class="col">
+                    <div class="card-body">
+                        <div class="row no-gutters align-items-center">
+                            <div class="col mr-2">
+                                <div class="text-lg mb-2">
+                                    ¿Desea eliminar al empleado {{ obj.nombre }}?
+                                </div>
+                                <p>Este registro no podra ser recuperado</p>
+                                <br>
+                                <button type="button" class="btn btn-danger" id="btnEliminar">Eliminar</button>
+                                <button type="button" class="btn btn-secondary" onclick="return cerrar_modal()"></span>Cancelar</button>
+                            </div>
+                        </div>
+                    </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+<script>
+    $(document).ready(function(){
+
+        var token = $('input[name=csrfmiddlewaretoken]').val();
+        $.ajaxSetup({
+            beforeSend: function(xhr, settings){
+                if(!(/^http:.*/.test(settings.url) || /^https:.*/.test(settings.url))){
+                    xhr.setRequestHeader("X-CSRFToken", token);
+                }
+            }
+        });
+
+        function autoRefreshPage()
+        {
+            setInterval(function() {location.reload();}, 1500);
+        };
+
+        $("#btnEliminar").click(function(e){
+            e.preventDefault();
+            //alert('Probando');
+
+            var id = {{ obj.id }};
+
+            var template = "{% url 'catalogos_app:empleado_eliminar' obj.id %}";
+            //template += id;
+            var data = {"id": id};
+            data = JSON.stringify(data);
+
+            $.ajax({
+                type: "POST",
+                url: template,
+                data: data,
+                beforeSend: function(xhr, settings){
+                    $.ajaxSettings.beforeSend(xhr, settings);
+                },
+
+                success: function(response){
+                    //console.log(response);
+                    cerrar_modal();
+                    //alert(response);
+                    //var tipo = (response.startsWith('Registro no:') ? 'error':'success');
+                    mensajesweet("Empleado eliminado correctamente");
+                    autoRefreshPage()
+                    
+                },
+
+                error: function(jqXHR, textStatus, errorThrow){
+                    console.log(textStatus, errorThrow);
+                    mensajesweet(errorThrow);
+                    cerrar_modal();
+                }
+                
+            });
+        });
+    });
+</script>

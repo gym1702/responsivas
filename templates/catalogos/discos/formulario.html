@@ -1,0 +1,80 @@
+<div class="modal-dialog modal-lg">
+    <div class="modal-content">
+
+        {% if obj %}
+        <form method="post" rol="form" class="form" action="{% url 'catalogos_app:disco_editar' obj.pk %}"
+            enctype="multipart/form-data">
+            {% else %}
+            <form method="post" rol="form" class="form" action="{% url 'catalogos_app:disco_crear' %}"
+                enctype="multipart/form-data">
+                {% endif %}
+
+                {% csrf_token %}
+                <div class="col-xl-12 col-md-12 mb-12">
+                    {% if obj %}
+                    <div class="card border-left-warning shadow h-100 py-2">
+                        {% else %}
+                        <div class="card border-left-success shadow h-100 py-2">
+                            {% endif %}
+                            <div class="card-body">
+                                <div class="row no-gutters">
+                                    <div class="col mr-2">
+                                        <div class="text-md font-weight-bold text-secondary text-uppercase mb-1">
+                                            {% if obj %} Editar {% else %} Nuevo {% endif %} disco duro
+                                        </div>
+                                        <div class="dropdown-divider mb-3"></div>
+
+                                        <div class="row mb-12">
+                                            <div class="col-10">
+                                            </div>
+                                            <div class="col-2">
+                                                <label>Activo</label>
+                                                <div>
+                                                    {{ form.activo }} 
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <br>
+
+                                        <div class="row mb-12">
+                                            <div class="col-4">
+                                                <label>Tipo</label>
+                                                <div>
+                                                    {{ form.tipo }}
+                                                </div>
+                                            </div>
+                                            <div class="col-4">
+                                                <label>Interfaz</label>
+                                                <div>
+                                                    {{ form.interfaz }}
+                                                </div>
+                                            </div>
+                                            <div class="col-4">
+                                                <label>Capacidad (Gb)</label>
+                                                <div>
+                                                    {{ form.capacidad }}
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <br>
+
+                                    
+                                        <div ALIGN="right">
+                                            <div>
+                                                <button type="submit" class="btn btn-primary"><span
+                                                        class="fa fa-save"></span> Guardar</button>
+                                                
+                                                <button type="button" class="btn btn-secondary"
+                                                    onclick="return cerrar_modal()"><span class="fa fa-undo"></span>
+                                                    Cancelar</button>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+            </form>
+    </div>
+</div>
