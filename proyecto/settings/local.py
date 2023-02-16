@@ -3,7 +3,7 @@ import os
 
 # SECURITY WARNING: don't run with debug turned on in production!
 
-#DEBUG = True
+DEBUG = True
 
 #PARA DEPLOY CON RENDER
 DEBUG = 'RENDER' not in os.environ
