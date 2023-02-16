@@ -3,7 +3,7 @@ import os
 
 # SECURITY WARNING: don't run with debug turned on in production!
 
-#comentar para despliegue
+#comentar para despliegue en local activar
 #DEBUG = True
 
 #PARA DEPLOY CON RENDER
@@ -41,6 +41,9 @@ STATICFILES_DIRS = [BASE_DIR / "static",]
 MEDIA_URL = '/media/'
 MEDIA_ROOT = (BASE_DIR / 'media')
 
+#para despliegue en render
+if not DEBUG:
+    STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 
 #CONFIGURACION DE CKEDITOR
@@ -72,6 +75,3 @@ EMAIL_HOST_USER = get_secret('EMAIL')
 EMAIL_HOST_PASSWORD = get_secret('EMAIL_PASSWORD')
 EMAIL_PORT = 587
 
-#para despliegue en render
-if not DEBUG:
-    STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'

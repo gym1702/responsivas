@@ -42,4 +42,4 @@ webencodings==0.5.1
 xhtml2pdf==0.2.9
 #para despliegue en render
 gunicorn==20.1.0
-whitenoise==5.2.0
+whitenoise==6.3.0
