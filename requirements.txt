@@ -40,3 +40,6 @@ uritools==4.0.1
 urllib3==1.26.14
 webencodings==0.5.1
 xhtml2pdf==0.2.9
+#para despliegue en render
+gunicorn==20.1.0
+whitenoise==5.2.0

@@ -1,9 +1,22 @@
 from .base import *
+import os
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+
+#DEBUG = True
+
+#PARA DEPLOY CON RENDER
+DEBUG = 'RENDER' not in os.environ
+##############################
 
 ALLOWED_HOSTS = ['*']
+
+
+#PARA DEPLOY CON RENDER
+RENDER_EXTERNAL_HOSTNAME = os.environ.get('RENDER_EXTERNAL_HOSTNAME')
+if RENDER_EXTERNAL_HOSTNAME:
+    ALLOWED_HOSTS.append(RENDER_EXTERNAL_HOSTNAME)
+############################
 
 
 DATABASES = {
@@ -57,3 +70,7 @@ EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_HOST_USER = get_secret('EMAIL')
 EMAIL_HOST_PASSWORD = get_secret('EMAIL_PASSWORD')
 EMAIL_PORT = 587
+
+#para despliegue en render
+if not DEBUG:
+    STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
