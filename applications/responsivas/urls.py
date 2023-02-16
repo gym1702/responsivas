@@ -1,17 +1,22 @@
 from django.urls import path
-from .views import ResponsivaListar, devolver_responsiva, responsivas, BorrarDetalle, ResponsivaEliminar
+from . import views
 from .reportes import reporte_responsivas, imprimir_responsiva, imprimir_devolucion
 
 app_name = 'responsivas_app'
 
 urlpatterns =[
     #RESPONSIVAS
-    path('responsivas/listar/', ResponsivaListar.as_view(), name='responsiva_listar'),
-    path('responsivas/crear/', responsivas, name='responsiva_crear'),
-    path('responsivas/editar/<int:responsiva_id>', responsivas, name='responsiva_editar'),
-    path('responsivas/<int:responsiva_id>/eliminar/<int:pk>', BorrarDetalle.as_view(), name='responsiva_del'),
-    path('responsivas/devolver/<int:responsiva_id>', devolver_responsiva, name='responsiva_devolver'),
-    path('responsivas/eliminar/<int:pk>', ResponsivaEliminar.as_view(), name='responsiva_eliminar'),
+    path('responsivas/listar/', views.ResponsivaListar.as_view(), name='responsiva_listar'),
+    path('responsivas/crear/', views.responsivas, name='responsiva_crear'),
+    path('responsivas/editar/<int:responsiva_id>', views.responsivas, name='responsiva_editar'),
+    path('responsivas/<responsiva_id>/eliminar/<pk>/', views.BorrarDetalle.as_view(), name='responsiva_del'),
+    #path('responsivas/<responsiva_id>/eliminar/<pk>/', views.BorrarDetalle.as_view(), name='responsiva_del2'),
+    #path('responsivas/<int:responsiva_id>/eliminar/<int:pk>/', views.borra_detalle, name='responsiva_del_det'),
+    path('responsivas/devolver/<int:responsiva_id>', views.devolver_responsiva, name='responsiva_devolver'),
+    path('responsivas/eliminar/<pk>', views.ResponsivaEliminar.as_view(), name='responsiva_eliminar'),
+    #path('responsivas/eliminar/<pk>', views.eliminar_responsiva, name='responsiva_eliminar'),
+    path('responsivas/detalle/<pk>', views.VerDetalleResponsiva.as_view(), name='responsiva_detalle'),
+
 
     path('responsivas/reporte', reporte_responsivas, name='responsivas_print_all'),
     path('responsivas/<int:resp_id>/imprimir/', imprimir_responsiva, name='responsivas_print_one'),

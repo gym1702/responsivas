@@ -183,7 +183,10 @@
                                                 <td>{{ item.equipo.insumo }}</td>
                                                 <td>{{ item.equipo }}</td>                                                
                                                 <td>
-                                                    <button class="btn btn-danger btn-circle btn-sm" onclick="return abrir_modal('{% url 'responsivas_app:responsiva_del' encabezado.pk item.id %}')"><i class="fas fa-trash-alt"></i></button>
+                                                    <button class="btn btn-danger btn-circle btn-sm" 
+                                                        onclick="return abrir_modal('{% url 'responsivas_app:responsiva_del' encabezado.pk item.id %}')">
+                                                        <i class="fas fa-trash-alt"></i>
+                                                    </button>
                                                 </td>
                                                 </tr>
                                                 {% endfor %}

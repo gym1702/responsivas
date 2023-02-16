@@ -8,7 +8,7 @@ from xhtml2pdf import pisa
 from django.contrib.staticfiles import finders
 
 from applications.catalogos.models import Empleado, Equipo
-from .models import Responsiva, Detalle
+from .models import Responsiva, Detalle, DetalleBackup
 
 
 def link_callback(uri, rel):
@@ -111,6 +111,7 @@ def imprimir_devolucion(request, resp_id):
     if enc:
         det = Detalle.objects.filter(responsiva__id=resp_id)
         #emp = Empleado.objects.filter(id=enc.empleado_id).first()
+        detdev = DetalleBackup.objects.filter(responsiva_id = enc.id)
     else:
         det = {}
 
@@ -118,6 +119,7 @@ def imprimir_devolucion(request, resp_id):
         'det': det,
         'enc':enc,
         'request':request,
+        'detdev':detdev,
     }
 
     response = HttpResponse(content_type='application/pdf')

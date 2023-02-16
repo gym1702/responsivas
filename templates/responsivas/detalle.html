@@ -1,0 +1,137 @@
+{% extends 'base/base.html' %}
+
+
+{% block page_content %}
+
+<div class="row">
+    <div class="container-sm col-10">
+        <div class="card">
+            <div class="card-header">
+                <h4>Detalles de responsiva no. <b>{{ obj }}</b></h4>
+            </div>
+            <div class="card-body">
+
+                <div class="row">
+                    <div class="col-md-3">
+                        <i class="fa fa-calendar"></i> Fecha de entrega
+                        <p style="font-weight:300;">{{ obj.fecha_entrega | date:"d/m/Y" }}</p>
+                    </div>
+                    <div class="col-md-3">
+                        <i class="fa fa-user"></i> Entrego equipo
+                        {% if obj.usuario_crea %}
+                            <p style="font-weight:300;">{{ obj.usuario_crea.full_name }}</p>
+                        {% else %}
+                            <p style="font-weight:300;">-</p>
+                        {% endif %}
+                    </div>
+                    <div class="col-md-3">
+                        <i class="fa fa-calendar"></i> Fecha de devolucion
+                        {% if obj.fecha_devolucion %}
+                            <p style="font-weight:300;">{{ obj.fecha_devolucion | date:"d/m/Y - H:m:s" }}</p>
+                        {% else %}
+                            <p style="font-weight:300;">-</p>
+                        {% endif %}
+                    </div>
+                    <div class="col-md-3">
+                        <i class="fa fa-retweet"></i> Recibe equipo
+                        {% if obj.recibe_devolucion %}
+                            <p style="font-weight:300;">{{ obj.recibe_devolucion }}</p>
+                        {% else %}
+                            <p style="font-weight:300;">-</p>
+                        {% endif %}
+                    </div>
+                    <br>
+                </div>
+                <hr>
+
+                <div class="row">
+                    <div class="col-12">
+
+                        <h5>Datos del usuario</h5>
+                        <br>
+                        <div class="row">
+                            <div class="col-5">
+                                <i class="fa fa-user"></i> Usuario
+                                <p style="font-weight:300;">{{ obj.empleado }}</p>
+                            </div>
+                            <div class="col-3">
+                                <i class="fa fa-sitemap"></i> Deparmento
+                                <p style="font-weight:300;">{{ obj.empleado.depto }}</p>
+                            </div>
+                            <div class="col-4">
+                                <i class="fa fa-bookmark"></i> Puesto
+                                <p style="font-weight:300;">{{ obj.empleado.puesto }}</p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-5">
+                                <i class="fa fa-phone"></i> Telefono
+                                <p style="font-weight:300;">{{ obj.empleado.telefono }}</p>
+                            </div>
+                            <div class="col-6">
+                                <i class="fa fa-envelope"></i> Email
+                                <p style="font-weight:300;">{{ obj.empleado.email }}</p>
+                            </div>
+                        </div>
+                        <hr>
+                    </div>
+                </div>
+                <br>
+
+                
+                <div div class="row">
+                    <div class="col-12">
+                        <h5 class="text-center">Detalle de equipo</h5>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Cant.</th>
+                                <th>Insumo</th>
+                                <th>Categoría</th>
+                                <th>Marca</th>
+                                <th>Modelo</th>
+                                <th>Serie</th>
+                                <th>Fecha movimiento</th>
+                                <th>Tipo movimiento</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for item in det %}
+                            <tr>
+                                <td>{{ item.cantidad }}</td>
+                                <td>{{ item.equipo.insumo }}</td>
+                                <td>{{ item.equipo.categoria }}</td>
+                                <td>{{ item.equipo.marca }}</td>
+                                <td>{{ item.equipo.modelo }}</td>
+                                <td>{{ item.equipo.serie }}</td>
+                                <td>{{ item.fecha_edicion | date:"d/m/Y - H:m:s"}}</td>
+                                {% if item.en_responsiva == 'Si' %}
+                                    <td>Equipo asignado</td>
+                                {% else %}
+                                    <td>Equipo devuelto</td>
+                                {% endif %}
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                    </div>
+
+                    <font style="font-size:14px;">&nbsp; &nbsp; <b>Observaciones:</b> </font>
+                    <br>
+                    <div class="col-12" ALIGN="left">
+                        <font style="font-size:14px;">{{ obj.observaciones }}</font>
+                    </div>
+
+
+            </div>
+        </div>
+        <div class="card-footer">
+            <div align="right">
+                <a href="{% url 'responsivas_app:responsiva_listar' %}" class="btn btn-primary">Regresar</a>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+
+{% endblock page_content %}

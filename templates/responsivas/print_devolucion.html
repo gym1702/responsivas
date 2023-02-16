@@ -15,7 +15,7 @@
     }
     .table1 {
     width: 100%;
-     max-width: 100%;
+    max-width: 100%;
     margin-bottom: 3px;
     background-color: #fff;
     }
@@ -53,6 +53,31 @@
     .print{
         font:12px, sans-serif, arial;
     }
+
+    /* table2 */
+    .table2 {
+    width: 100%;
+    max-width: 100%;
+    margin-bottom: 3px;
+    background-color: #fff;
+    }
+    .table2 th,
+    .table2 td {
+        padding: 5px;
+        vertical-align: top;
+        border-top: 0px solid #000;
+        text-align: center;
+    }
+    .table2 thead th {
+        vertical-align: bottom;
+        border-bottom: 0px solid #000;
+    }
+    .table2 tbody + tbody {
+        border-top: px solid #000;
+    }
+    .table2 .table2 {
+        background-color: #fff;
+    }
     </style>
 
 </head>
@@ -72,7 +97,7 @@
                     <h1 class="">No. de Responsiva: {{ enc.id }} </h1>
                 </div>
                 <div ALIGN="right">
-                    <h2 class="">Fecha de devolucion: {{ enc.fecha_devolucion | date:"d/m/Y" }} </h2>
+                    <h2 class="">Fecha: {{ enc.fecha_devolucion | date:"d/m/Y" }} </h2>
                 </div>
 
                 <table class="font-weight-bold">
@@ -108,91 +133,75 @@
 
                 <div ALIGN="center">
                     <font style="font-size:14px;">POR MEDIO DEL PRESENTE DOCUMENTO, HAGO CONSTAR QUE HE DEVUELTO 
-                        EL EQUIPO DE COMPUTO INDICADO EN LA <b>RESPONSIVA NO. {{ enc.id }}</b> QUE TENIA A MI CARGO EL CUAL FUE
-                        RECIBIDO EN CONFORMIDAD POR {{ enc.recibe_devolucion | upper }} Y DEL QUE HE QUEDADO LIBRE DE CULQUIER CARGO QUE SE ME PUDIERA PRESENTAR.</font>
+                        EL EQUIPO DE COMPUTO QUE TENIA A MI CARGO, EL CUAL FUE
+                        RECIBIDO EN CONFORMIDAD Y DEL QUE HE QUEDADO LIBRE DE CULQUIER CARGO QUE SE ME PUDIERA PRESENTAR.</font>
                 </div>
-                <!-- <div ALIGN="center">
-                    <font style="font-size:14px;">Equipo Devuelto</font>
-                </div> -->
-                <!-- <hr> -->
+                <div ALIGN="center">
+                    <font style="font-size:45px; color:#dbdee0">Equipo Devuelto</font>
+                </div>
             </div>
 
-            <!-- <div>
+            <div>
                 <table class="table1">
                     <thead>
                         <tr>
-                            <th>Cantidad</th>
+                            <th>Cant.</th>
                             <th>Insumo</th>
                             <th>Categoría</th>
                             <th>Marca</th>
                             <th>Modelo</th>
                             <th>Serie</th>
-                            <th>Condiciones</th>
+                            <th>Fecha devolución</th>
                         </tr>
                     </thead>
                     <tbody>
-                        {% for item in det %}
+                        {% for item in detdev %}
                         <tr>
                             <td>{{ item.cantidad }}</td>
                             <td>{{ item.equipo.insumo }}</td>
                             <td>{{ item.equipo.categoria }}</td>
                             <td>{{ item.equipo.marca }}</td>
-                            <td>{{ item.equipo }}</td>
+                            <td>{{ item.equipo.modelo }}</td>
                             <td>{{ item.equipo.serie }}</td>
-                            <td>{{ item.equipo.condiciones }}</td>
+                            <td>{{ item.fecha_edicion | date:"d/m/Y"}}</td>
                         </tr>
                         {% endfor %}
                     </tbody>
                 </table>
-                <font style="font-size:12px;">Observaciones:</font>
+                </div>
+
+                <font style="font-size:14px;">&nbsp; &nbsp; <b>Observaciones:</b> </font>
                 <br>
                 <div class="col-12" ALIGN="left">
-                    {{ enc.observaciones }}
-                </div>  
-            </div> -->
+                    <font style="font-size:14px;">{{ obj.observaciones }}</font>
+                </div> 
+            </div>
         </div>
     </div>
 </body>
-<footer>    
-    
-</footer>
 <br>
 <br>
 <br>
-<div ALIGN="center">
-    <font style="font-size:45px; color:#dbdee0">Equipo Devuelto</font>
-</div>
-<div ALIGN="center">
-    <font style="font-size:15px; color:#dbdee0">(Ver detalles en responsiva no. {{ enc.id }})</font>
-</div>
 <br>
 <br>
 
 
-<div ALIGN="center">
-    <font style="font-size:16px;">ENTREGA:</font>
-    <br>
-    <br>
-    <br>
-    <font style="font-size:16px;">__________________________________</font>
-    <br>
-    <br>
-    <font style="font-size:16px;">{{ enc.empleado }}</font>
-    <br>
-</div>
-<br>
-<br>
-<br>
-<br>
-<div ALIGN="center">
-    <font style="font-size:16px;">RECIBE:</font>
-    <br>
-    <br>
-    <br>
-    <font style="font-size:16px;">__________________________________</font>
-    <br>
-    <br>
-    <font style="font-size:16px;">{{ enc.recibe_devolucion }}</font>
-    <br>
-</div>
+    <table class="table2">
+        <tbody>            
+            <tr>
+                <td><font style="font-size:16px; text-align: center;">ENTREGA:</font></td>
+                <td><font style="font-size:16px; text-align: center;">RECIBE:</font></td>
+            </tr>
+            <tr>
+                <td><font style="font-size:16px; text-align: center;">_______________________________</font></td>
+                <td><font style="font-size:16px; text-align: center;">_______________________________</font></td>                    
+            </tr>
+            <tr class="text-center">
+                <td><font style="font-size:16px;">{{ enc.empleado }}</font></td>
+                <td><font style="font-size:16px;">{{ enc.recibe_devolucion }}</font></td>
+            </tr>           
+        </tbody>
+    </table>     
+
+
 </html>

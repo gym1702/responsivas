@@ -37,9 +37,9 @@
                                     <td>{{item.empleado}}</td>
                                     <td>{{item.fecha_entrega|date}}</td>
                                     {% if item.estado_entrega == 'Equipo Entregado' %} 
-                                        <td class="text-primary">Equipo Asignado</td>
+                                        <td><a href="{% url 'responsivas_app:responsiva_detalle' item.id %}" class="text-primary">Equipo Asignado</a></td>
                                     {% else %}
-                                        <td class="text-success">Equipo Devuelto</td>
+                                        <td ><a href="{% url 'responsivas_app:responsiva_detalle' item.id %}" class="text-success">Equipo Devuelto</a></td>
                                     {% endif %} 
                                     
                                     {% if item.fecha_devolucion == None %} 
@@ -217,7 +217,7 @@
         Swal.fire({
         title: 'Atención',
         icon: 'warning',
-        text: '¡Verifique que el empleado no cuente con una responsiva, si es así, solo edítela!',
+        text: '¡Verifique que el empleado no cuente con una responsiva activa, si es así, solo edítela!',
         showCancelButton: true,
         confirmButtonText: 'Crear nueva',
         cancelButtonText: 'Cancelar'
