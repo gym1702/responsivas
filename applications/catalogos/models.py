@@ -104,9 +104,9 @@ class Procesador(Comun):
     )
 
     marca = models.CharField(choices=marca, default='-', max_length=100)
-    numero = models.CharField(max_length=30, unique=True)
+    numero = models.CharField(max_length=30, blank=True, null=True)
     generacion = models.IntegerField(blank=True, null=True)
-    velocidad = models.DecimalField(max_digits=3, decimal_places=1, blank=True, null=True)
+    velocidad = models.DecimalField(max_digits=3, decimal_places=2, blank=True, null=True)
     
 
     def __str__(self):

@@ -14,14 +14,14 @@ from applications.catalogos.models import Equipo
 
 #CLASE SIN PRIVILEGIOS
 class SinPrivilegios(LoginRequiredMixin, PermissionRequiredMixin):
-    login_url = 'bases:login'
+    login_url = 'users_app:login'
     raise_exception = False
     redirect_field_name = "redirect_to"
 
     def handle_no_permission(self):
         from django.contrib.auth.models import AnonymousUser
         if not self.request.user == AnonymousUser():
-            self.login_url='bases:sin_privilegios'
+            self.login_url='home_app:sin_privilegios'
         return HttpResponseRedirect(reverse_lazy(self.login_url))
 
 
