@@ -3,21 +3,10 @@ import os
 
 # SECURITY WARNING: don't run with debug turned on in production!
 
-#comentar para despliegue en local activar
-#DEBUG = True
-
-#PARA DEPLOY CON RENDER
-DEBUG = 'RENDER' not in os.environ
-##############################
+#comentar para despliegue, en local activar
+DEBUG = True
 
 ALLOWED_HOSTS = ['*']
-
-
-#PARA DEPLOY CON RENDER
-RENDER_EXTERNAL_HOSTNAME = os.environ.get('RENDER_EXTERNAL_HOSTNAME')
-if RENDER_EXTERNAL_HOSTNAME:
-    ALLOWED_HOSTS.append(RENDER_EXTERNAL_HOSTNAME)
-############################
 
 
 DATABASES = {
@@ -41,9 +30,6 @@ STATICFILES_DIRS = [BASE_DIR / "static",]
 MEDIA_URL = '/media/'
 MEDIA_ROOT = (BASE_DIR / 'media')
 
-#para despliegue en render
-if not DEBUG:
-    STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 
 #CONFIGURACION DE CKEDITOR
